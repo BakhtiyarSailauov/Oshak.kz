@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "saniraq"
+version = "0.1.0"
+description = ""
+authors = ["BAkhtiyar <cena61454@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.101.1"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+sqlalchemy = "^2.0.20"
+alembic = "^1.11.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
