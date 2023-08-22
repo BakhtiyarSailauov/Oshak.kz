@@ -34,8 +34,6 @@ class UsersRepository:
     def get_user_by_id(self, db:Session, id: int) -> User:
         return db.query(User).filter(User.id == id).first()
 
-    def get_users(self, db: Session) -> List[User]:
-        return db.query(User).all()
 
 
 class AnnouncementsRepository:
@@ -62,7 +60,7 @@ class AnnouncementsRepository:
             if upd_data.description.lower() != "string" and upd_data.description is not None:
                 announcement.description = upd_data.description
         else:
-            raise HTTPException(status_code=404, detail="Non-user announcement")
+            raise HTTPException(status_code=403, detail="Forbidden")
 
         db.commit()
         db.refresh(announcement)
@@ -74,12 +72,15 @@ class AnnouncementsRepository:
         if user_id == announcement.user_id:
             db.delete(announcement)
         else:
-            raise HTTPException(status_code=404, detail="Non-user announcement")
+            raise HTTPException(status_code=403, detail="Forbidden")
 
         db.commit()
 
     def get_announcement_by_id(self, db: Session, id: int) -> Announcement:
         return db.query(Announcement).filter(Announcement.id == id).first()
+
+    def get_announcements(self, db: Session) -> List[Announcement]:
+        return db.query(Announcement).all()
 
 
 class CommentsRepository:
@@ -102,7 +103,7 @@ class CommentsRepository:
             if upd_data.content.lower() != "string" and upd_data.content is not None:
                 comment.content = upd_data.content
         else:
-            raise HTTPException(status_code=404, detail="Non-user announcement")
+            raise HTTPException(status_code=403, detail="Forbidden")
 
         db.commit()
         db.refresh(comment)
@@ -114,7 +115,7 @@ class CommentsRepository:
         if user_id == comment.author_id:
             db.delete(comment)
         else:
-            raise HTTPException(status_code=404, detail="Non-user announcement")
+            raise HTTPException(status_code=403, detail="Forbidden")
 
         db.commit()
         return True
